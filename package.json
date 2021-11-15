@@ -1,0 +1,11 @@
+{
+  "name": "string-prototype-replace-regexp-benchmark",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "emoji-test-regex-pattern": "^1.6.0",
+    "jsesc": "^3.0.2"
+  }
+}
