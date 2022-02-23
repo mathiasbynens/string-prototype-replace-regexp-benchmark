@@ -16,8 +16,8 @@ const jsesc = require('jsesc');
 
 const EMOJI_TEST_PATH = './node_modules/emoji-test-regex-pattern/dist/latest';
 const index = fs.readFileSync(`${EMOJI_TEST_PATH}/index.txt`, 'utf8').toString().trim();
-const pattern = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript.txt`, 'utf8').toString().trim();
-const patternU = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript-u.txt`, 'utf8').toString().trim();
+const patternWithoutU = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript.txt`, 'utf8').toString().trim();
+const patternWithU = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript-u.txt`, 'utf8').toString().trim();
 
 const toStringLiteral = (string) => {
   // We’d have used JSON.stringify() if it were ASCII-safe.
@@ -26,6 +26,7 @@ const toStringLiteral = (string) => {
 
 const generateSource = ({ method, flags }) => {
   const id = `${ method }-${ flags }`;
+  const pattern = flags.includes('u') ? patternWithU : patternWithoutU;
   return `
 const re = /${ pattern }/${ flags };
 const string = ${ toStringLiteral(index) };
