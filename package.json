@@ -2,6 +2,7 @@
   "name": "string-prototype-replace-regexp-benchmark",
   "private": true,
   "scripts": {
+    "bench": "./bench.sh",
     "build": "node build.js"
   },
   "devDependencies": {
