@@ -16,17 +16,24 @@ const jsesc = require('jsesc');
 
 const EMOJI_TEST_PATH = './node_modules/emoji-test-regex-pattern/dist/latest';
 const index = fs.readFileSync(`${EMOJI_TEST_PATH}/index.txt`, 'utf8').toString().trim();
-const patternWithoutU = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript.txt`, 'utf8').toString().trim();
+const patternWithoutFlags = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript.txt`, 'utf8').toString().trim();
 const patternWithU = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript-u.txt`, 'utf8').toString().trim();
+const patternWithV = fs.readFileSync(`${EMOJI_TEST_PATH}/javascript-v.txt`, 'utf8').toString().trim();
 
 const toStringLiteral = (string) => {
   // We’d have used JSON.stringify() if it were ASCII-safe.
   return jsesc(string, { wrap: true });
 };
 
+const getPattern = (flags) => {
+  if (flags.includes('v')) return patternWithV;
+  if (flags.includes('u')) return patternWithU;
+  return patternWithoutFlags;
+};
+
 const generateSource = ({ method, flags }) => {
   const id = `${ method }-${ flags }`;
-  const pattern = flags.includes('u') ? patternWithU : patternWithoutU;
+  const pattern = getPattern(flags);
   return `
 // Copyright 2021 the V8 project authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
@@ -51,5 +58,7 @@ const writeFile = ({ method, flags }) => {
 
 writeFile({ method: 'replace',    flags: 'g'  });
 writeFile({ method: 'replace',    flags: 'gu' });
+writeFile({ method: 'replace',    flags: 'gv' });
 writeFile({ method: 'replaceAll', flags: 'g'  });
 writeFile({ method: 'replaceAll', flags: 'gu' });
+writeFile({ method: 'replaceAll', flags: 'gv' });
