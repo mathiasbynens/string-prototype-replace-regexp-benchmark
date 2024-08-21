@@ -6,7 +6,7 @@
     "build": "node build.js"
   },
   "devDependencies": {
-    "emoji-test-regex-pattern": "^2.0.2",
+    "emoji-test-regex-pattern": "^2.1.0",
     "jsesc": "^3.0.2"
   }
 }
